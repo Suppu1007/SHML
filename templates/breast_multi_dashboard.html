@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHML | Breast Cancer Risk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <header class="bg-gray-600 shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="/home" class="text-2xl font-bold text-white">Breast Cancer Prediction</a>
+            <nav class="space-x-6 flex items-center">
+                <a href="/report" class="text-white hover:text-gray-300 font-medium">My Reports</a>
+                <button onclick="window.location.href='/'" class="py-2 px-3 rounded-lg text-sm bg-gray-500 hover:bg-gray-700 text-white font-medium transition duration-150">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-8">Predictive Analysis (30 Features)</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-lg">
+                <form id="breast-prediction-form" class="space-y-6">
+                    <p class="text-sm text-gray-500 mb-4">Enter the 30 features from the diagnostic analysis below.</p>
+
+                    <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">A. Mean Values (Features 1-10)</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div><label class="block text-xs font-medium text-gray-700">Radius</label><input type="number" id="mean_radius" value="17.99" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Texture</label><input type="number" id="mean_texture" value="10.38" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Perimeter</label><input type="number" id="mean_perimeter" value="122.8" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Area</label><input type="number" id="mean_area" value="1001" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Smoothness</label><input type="number" id="mean_smoothness" value="0.118" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Compactness</label><input type="number" id="mean_compactness" value="0.277" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concavity</label><input type="number" id="mean_concavity" value="0.300" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concave Points</label><input type="number" id="mean_concave_points" value="0.147" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Symmetry</label><input type="number" id="mean_symmetry" value="0.241" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Fractal Dim</label><input type="number" id="mean_fractal_dimension" value="0.078" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4 mt-6">B. Standard Error Values (Features 11-20)</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div><label class="block text-xs font-medium text-gray-700">Radius SE</label><input type="number" id="se_radius" value="1.095" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Texture SE</label><input type="number" id="se_texture" value="0.9053" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Perimeter SE</label><input type="number" id="se_perimeter" value="8.589" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Area SE</label><input type="number" id="se_area" value="153.4" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Smoothness SE</label><input type="number" id="se_smoothness" value="0.0063" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Compactness SE</label><input type="number" id="se_compactness" value="0.0490" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concavity SE</label><input type="number" id="se_concavity" value="0.0537" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concave Points SE</label><input type="number" id="se_concave_points" value="0.0158" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Symmetry SE</label><input type="number" id="se_symmetry" value="0.0300" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Fractal Dim SE</label><input type="number" id="se_fractal_dimension" value="0.0061" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4 mt-6">C. Worst/Largest Values (Features 21-30)</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div><label class="block text-xs font-medium text-gray-700">Radius Worst</label><input type="number" id="worst_radius" value="25.38" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Texture Worst</label><input type="number" id="worst_texture" value="17.33" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Perimeter Worst</label><input type="number" id="worst_perimeter" value="184.6" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Area Worst</label><input type="number" id="worst_area" value="2019" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Smoothness Worst</label><input type="number" id="worst_smoothness" value="0.162" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Compactness Worst</label><input type="number" id="worst_compactness" value="0.665" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concavity Worst</label><input type="number" id="worst_concavity" value="0.711" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Concave Points Worst</label><input type="number" id="worst_concave_points" value="0.265" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Symmetry Worst</label><input type="number" id="worst_symmetry" value="0.460" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                        <div><label class="block text-xs font-medium text-gray-700">Fractal Dim Worst</label><input type="number" id="worst_fractal_dimension" value="0.118" step="any" required class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm text-sm"></div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <label class="block text-sm font-medium text-gray-700">Select Model Type</label>
+                        <select id="breast_model_type" class="mt-1 block w-full p-2 border border-gray-300 rounded-lg shadow-sm">
+                            <option value="xgb">XGBoost (Optimized)</option>
+                            <option value="rf">RF (Random Forest)</option>
+                            <option value="fnn">FNN (Feedforward Neural Network)</option>
+                            <option value="cnn">CNN (1D Convolutional Network)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-gray-700 hover:bg-gray-500 focus:outline-none transition duration-300 mt-6">
+                        Predict Cancer Status
+                    </button>
+                </form>
+            </div>
+
+            <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg border-l-4 border-gray-500 h-fit">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Prediction Results</h2>
+                <div id="breast-prediction-output" class="space-y-4">
+                    <p class="text-gray-500">Enter all 30 feature data points and click 'Predict' to see the results.</p>
+                </div>
+                <div id="loading-indicator" class="hidden text-center mt-4">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                    <p class="text-green-600 mt-2">Analyzing...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const form = document.getElementById('breast-prediction-form');
+        const output = document.getElementById('breast-prediction-output');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        
+        // List of all 30 feature IDs in the required order (Mean, SE, Worst)
+        const featureIds = [
+            'mean_radius', 'mean_texture', 'mean_perimeter', 'mean_area', 'mean_smoothness', 
+            'mean_compactness', 'mean_concavity', 'mean_concave_points', 'mean_symmetry', 'mean_fractal_dimension',
+            
+            'se_radius', 'se_texture', 'se_perimeter', 'se_area', 'se_smoothness', 
+            'se_compactness', 'se_concavity', 'se_concave_points', 'se_symmetry', 'se_fractal_dimension',
+            
+            'worst_radius', 'worst_texture', 'worst_perimeter', 'worst_area', 'worst_smoothness', 
+            'worst_compactness', 'worst_concavity', 'worst_concave_points', 'worst_symmetry', 'worst_fractal_dimension'
+        ];
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            output.innerHTML = '';
+            loadingIndicator.classList.remove('hidden');
+
+            // Collect all 30 input features in the correct order
+            const features = featureIds.map(id => {
+                const element = document.getElementById(id);
+                // Use parseFloat with fallback for robustness
+                return parseFloat(element ? element.value : '0') || 0;
+            });
+
+            const model_type = document.getElementById('breast_model_type').value;
+
+            try {
+                // Fetch call to Flask backend API. Use the explicit route.
+                const response = await fetch('http://127.0.0.1:5000/predict_breast', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ features, model_type })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! Status: ${response.status}. Details: ${errorText.substring(0, 100)}...`);
+                }
+
+                const result = await response.json();
+                
+                // Determine color based on prediction result
+                const isMalignant = result.result === 'Malignant';
+                const labelColor = isMalignant ? 'text-red-600' : 'text-green-600';
+                const confidenceColor = isMalignant ? 'bg-red-100' : 'bg-green-100';
+
+                // Displaying the results
+                output.innerHTML = `
+                    <p class="text-sm font-medium text-gray-500">Model Used: ${result.model_used}</p>
+                    <p class="text-4xl font-extrabold ${labelColor} my-3">${result.result}</p>
+                    
+                    <div class="flex items-center space-x-2 p-3 ${confidenceColor} rounded-lg shadow-inner mt-2">
+                        <svg class="w-6 h-6 ${labelColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618 4.015a11.97 11.97 0 01-2.812 3.49M4.197 19.197a11.97 11.97 0 01-2.812-3.49m0 0l-1.397-1.397m1.397 1.397l-1.397 1.397m3.49-2.812l-.854-1.281m0 0l-1.397-1.397m1.397 1.397l-1.397 1.397m-2.812 3.49l1.397-1.397m-1.397 1.397l-1.397 1.397M12 4.5v15"></path></svg>
+                        <p class="text-lg font-semibold ${labelColor}">Confidence: ${result.confidence}</p>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">Disclaimer: This prediction is for informational purposes only and does not replace professional medical advice.</p>
+                `;
+            } catch (error) {
+                // Display error message
+                output.innerHTML = `<p class="text-red-500 font-semibold">Prediction Failed:</p><p class="text-sm text-red-500">Could not connect to backend server or invalid data.<br>Error: ${error.message}</p>`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+    </script>
+
+  <footer class="bg-gray-100 text-center text-gray-500 text-sm py-4">
+    &copy; 2025 Smart Health Prediction | All Rights Reserved
+  </footer>
+</body>
+</html>

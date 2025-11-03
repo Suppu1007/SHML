@@ -1,0 +1,49 @@
+# Web framework
+Flask
+flask-cors
+
+# Data processing
+numpy
+pandas
+scikit-learn
+joblib
+
+# Machine learning models
+xgboost
+
+# Deep learning
+tensorflow
+
+# Optional (visualizations)
+matplotlib
+seaborn
+plotly
+
+# HDF5 support for Keras models
+h5py
+
+#smart_health/
+#│
+#├── app.py
+#├── mfs.py
+#├── breast_Cancer.py
+#├── models/
+#│   ├── stroke_xgb.joblib
+#│   └── breast_rf.joblib
+#├── templates/
+#│   ├── Register.html
+#│   ├── Login.html
+#│   ├── home.html
+#│   ├── admin.html
+#│   ├── adminhome.html
+#│   ├── usybrainmptoms.html
+#│   ├── modelperformance.html
+#│   └── report.html
+#├── static/
+#│   ├── css/
+#│   ├── js/
+#│   └── images/
+#└── data/
+#    ├── stroke.csv
+#    └── breast_cancer.csv
+

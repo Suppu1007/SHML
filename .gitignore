@@ -1,0 +1,21 @@
+# Ignore environment and dependency folders
+lib/
+lib64/
+bin/
+include/
+share/
+__pycache__/
+*.pyc
+*.pyo
+*.so
+*.log
+venv/
+.env/
+.DS_Store
+
+# Ignore large model/data files
+*.h5
+*.pkl
+*.csv
+*.npy
+*.sqlite3

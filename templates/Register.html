@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SHML | Register</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-indigo-50 min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-md">
+        <div class="bg-white p-8 rounded-xl shadow-2xl space-y-6">
+
+            <!-- Header -->
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center">Create Your Account</h2>
+            <p class="text-center text-sm text-gray-600">
+                Already have an account?
+                <a href="{{ url_for('login') }}" class="font-medium text-indigo-500 hover:text-indigo-700">
+                    Sign in here
+                </a>
+            </p>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="space-y-2">
+                        {% for category, message in messages %}
+                            <div class="p-3 rounded-lg text-sm 
+                                {% if category == 'danger' %}bg-red-100 text-red-800
+                                {% elif category == 'success' %}bg-green-100 text-green-800
+                                {% else %}bg-blue-100 text-blue-800{% endif %}" 
+                                role="alert" id="flash-message">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Registration Form -->
+            <form id="register-form" action="{{ url_for('register') }}" method="POST" class="space-y-6">
+
+                <!-- Full Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input id="name" name="name" type="text" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                                  focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" />
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input id="email" name="email" type="email" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                                  focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" />
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input id="password" name="password" type="password" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                                  focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" />
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input id="confirm_password" name="confirm_password" type="password" required
+                           class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                                  focus:ring-indigo-500 focus:border-indigo-500 transition duration-150" />
+                </div>
+
+                <!-- Role -->
+                <div>
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="role" name="role" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm 
+                                   focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        <option value="user">User (Patient)</option>
+                        <option value="admin">Admin (Researcher / Physician)</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg 
+                               text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 
+                               focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
+                               transition duration-300 transform hover:scale-[1.02]">
+                    Register
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="success-popup" class="fixed inset-0 bg-gray-800 bg-opacity-40 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center space-y-3">
+            <h3 class="text-xl font-semibold text-green-700">Registration Successful!</h3>
+            <p class="text-gray-600">Redirecting you to login page...</p>
+        </div>
+    </div>
+
+    <!-- Fixed Script -->
+    <script>
+        const form = document.getElementById('register-form');
+        const popup = document.getElementById('success-popup');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Send the form data to Flask
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => {
+                if (response.redirected) {
+                    // Flask redirected (success)
+                    popup.classList.remove('hidden');
+                    setTimeout(() => {
+                        window.location.href = response.url;
+                    }, 1500);
+                } else {
+                    // If not redirected, reload page to show flash messages
+                    window.location.reload();
+                }
+            })
+            .catch(err => {
+                console.error("❌ Registration failed:", err);
+            });
+        });
+    </script>
+
+</body>
+</html>
+

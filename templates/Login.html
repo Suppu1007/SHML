@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHML | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #login-message pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #fef2f2; /* Red 50 */
+            border: 1px solid #fca5a5; /* Red 300 */
+            font-family: monospace;
+            font-size: 0.875rem; /* text-sm */
+            text-align: left;
+            margin-top: 0.5rem;
+        }
+        #login-message .error-text {
+            color: #b91c1c; /* Red 700 */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<!-- Removed stray <body> and header from head and placed header correctly -->
+<body class="bg-indigo-50 min-h-screen flex flex-col">
+
+    <header class="bg-gray-700 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <a href="/" class="text-3xl font-extrabold text-white">Smart Health Prediction</a>
+        </div>
+    </header>
+
+    <!-- Main Content Area: Centered Login Form -->
+    <main class="flex-grow flex items-center justify-center">
+        <div class="w-full max-w-sm">
+            <div class="bg-white p-8 rounded-xl shadow-2xl space-y-6">
+                <h2 class="text-3xl font-extrabold text-gray-900 text-center">Sign in to Your Account</h2>
+                <p class="text-center text-sm text-gray-600">
+                    New user? 
+                    <a href="{{ url_for('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">Create an account</a>
+                </p>
+                
+                <div id="login-message" class="text-center text-sm font-medium h-auto min-h-6"></div>
+
+                <form id="login-form" action="{{ url_for('login') }}" method="POST" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input id="email" name="email" type="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input id="password" name="password" type="password" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                    </div>
+                    <button type="submit" id="login-button" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 transform hover:scale-105">
+                        Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <div id="success-popup" class="fixed inset-0 bg-gray-800 bg-opacity-40 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-xl shadow-2xl text-center space-y-4 transform scale-0 transition-all duration-300 ease-out">
+            <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-xl font-bold text-gray-900">Login Successful!</h3>
+            <p class="text-gray-600">Redirecting to your dashboard...</p>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const loginButton = document.getElementById('login-button');
+        const messageDiv = document.getElementById('login-message');
+        const successPopup = document.getElementById('success-popup');
+        const popupContent = successPopup.querySelector('div');
+
+        function setButtonLoading(isLoading) {
+            loginButton.disabled = isLoading;
+            loginButton.innerHTML = isLoading 
+                ? '<span class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span> Signing In...'
+                : 'Sign In';
+            loginButton.classList.toggle('hover:bg-indigo-700', !isLoading);
+            loginButton.classList.toggle('bg-indigo-400', isLoading);
+            loginButton.classList.toggle('cursor-not-allowed', isLoading);
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            setButtonLoading(true);
+            messageDiv.innerHTML = '';
+
+            const formData = new FormData(loginForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                // NOTE: The 'login' endpoint is assumed to be correct
+                const response = await fetch('{{ url_for('login') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                // Get the result first, regardless of status
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Login Success (Status 200)
+                    // Show success popup and redirect
+                    successPopup.classList.remove('hidden');
+                    setTimeout(() => popupContent.classList.remove('scale-0'), 10);
+                    // NOTE: The server now returns a 200 and the client redirects to 'home'
+                    setTimeout(() => window.location.href = '{{ url_for("home") }}', 1500); 
+                } else {
+                    // Login Failed (Status e.g., 401, 400, 500)
+                    // We expect the server to return an {"error": "..."} structure
+                    const errorMessage = result.error || JSON.stringify(result, null, 2);
+
+                    messageDiv.innerHTML = `
+                        <div class="error-text">Login Failed (Status: ${response.status})</div>
+                        <pre><code>${errorMessage}</code></pre>
+                    `;
+                    setButtonLoading(false);
+                }
+
+            } catch (err) {
+                // Network error, server down, or JSON parsing failed on client
+                messageDiv.innerHTML = '<div class="error-text text-red-700">Network error. Please try again.</div>';
+                console.error("Fetch/Network Error:", err);
+                setButtonLoading(false);
+            }
+        });
+    </script>
+</body>
+</html>
