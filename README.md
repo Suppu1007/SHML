@@ -1,6 +1,6 @@
 # 🧠 Smart Health Prediction Using Machine Learning
 
-This repository contains the full implementation of a **Smart Health Prediction System** built using **Flask**, **TensorFlow/Keras**, **Scikit-Learn**, and **MongoDB/PostgreSQL**. The project applies **Machine Learning** and **Deep Learning** models to predict two major health conditions — **Brain Stroke** and **Breast Cancer** — based on user-provided health metrics.
+This repository contains the full implementation of a **Smart Health Prediction System** built using **Flask**, **TensorFlow/Keras**, **Scikit-Learn**, and **MongoDB**. The project applies **Machine Learning** and **Deep Learning** models to predict two major health conditions — **Brain Stroke** and **Breast Cancer** — based on user-provided health metrics.
 
 ---
 
