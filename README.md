@@ -44,9 +44,9 @@ All models are pre-trained and stored in the `/models/` directory.
 ## 🧰 Tech Stack
 
 * **Backend:** Flask (Python)
-* **Frontend:** HTML, CSS, JavaScript, Bootstrap
+* **Frontend:** HTML, CSS, JavaScript
 * **ML/DL Frameworks:** Scikit-learn, TensorFlow/Keras, XGBoost
-* **Database:** MongoDB / PostgreSQL (for user management)
+* **Database:** MongoDB  (for user management)
 * **Utilities:** Pandas, NumPy, Joblib
 * **Deployment:** Gunicorn / Render / Localhost
 
